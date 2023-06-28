@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { randomNonce } from '$lib/random-nonce';
+	
 	let webSocketEstablished = false;
 	let ws: WebSocket | null = null;
 
@@ -11,7 +13,7 @@
 			webSocketEstablished = true;
 			const payload = {
 				type: 'LISTEN',
-				nonce: Date.now().toString(),
+				nonce: randomNonce(15),
 				data: {
 					topics: [`channel-points-channel-v1.${import.meta.env.VITE_CHANNEL_ID}`],
 					auth_token: import.meta.env.VITE_ACCESS_TOKEN
@@ -34,6 +36,7 @@
 		});
 	};
 </script>
+
 <button disabled={webSocketEstablished} on:click={() => establishWebSocket()}>
 	Establish WebSocket connection
 </button>

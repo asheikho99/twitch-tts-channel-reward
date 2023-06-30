@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { randomNonce } from '$lib/random-nonce';
+	import { getRandomNonce } from '$lib/getRandomNonce';
 	import { onClose } from '../events/websocket/onClose';
 	import { onError } from '../events/websocket/onError';
 	import { onMessage } from '../events/websocket/onMessage';
@@ -18,7 +18,7 @@
 			webSocketEstablished = true;
 			const payload = {
 				type: 'LISTEN',
-				nonce: randomNonce(15),
+				nonce: getRandomNonce(15),
 				data: {
 					topics: [`channel-points-channel-v1.${import.meta.env.VITE_CHANNEL_ID}`],
 					auth_token: import.meta.env.VITE_ACCESS_TOKEN

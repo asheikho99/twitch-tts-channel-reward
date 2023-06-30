@@ -1,6 +1,9 @@
 <script lang="ts">
-	import { handleMessage, handleResponse } from '$lib/messageHandler';
 	import { randomNonce } from '$lib/random-nonce';
+	import { onClose } from '../events/websocket/onClose';
+	import { onError } from '../events/websocket/onError';
+	import { onMessage } from '../events/websocket/onMessage';
+	import { onMessageError } from '../events/websocket/onMessageError';
 	import type { WebSocketMessage, WebSocketMessageError } from '../types/WebSocketMessage';
 
 	let webSocketEstablished = false;
@@ -27,27 +30,21 @@
 
 		ws.addEventListener('message', (event: MessageEvent<string>) => {
 			const webSocketMessage: WebSocketMessage | WebSocketMessageError = JSON.parse(event.data);
-			console.log(webSocketMessage);
 
 			switch (webSocketMessage.type) {
 				case 'RESPONSE':
-					handleResponse(webSocketMessage);
+					onMessageError(webSocketMessage as WebSocketMessageError);
 					break;
 				case 'MESSAGE':
-					handleMessage(webSocketMessage as WebSocketMessage);
+					onMessage(webSocketMessage as WebSocketMessage);
 					break;
 				default:
 					console.log(webSocketMessage.type);
 			}
 		});
 
-		ws.addEventListener('close', (event) => {
-			console.log('connection closed', event);
-		});
-
-		ws.addEventListener('error', (event) => {
-			console.error('WebSocket error', event);
-		});
+		ws.addEventListener('close', onClose);
+		ws.addEventListener('error', onError);
 	};
 </script>
 

@@ -1,11 +1,7 @@
 <script lang="ts">
+	import { handleMessage, handleResponse } from '$lib/messageHandler';
 	import { randomNonce } from '$lib/random-nonce';
-	import type {
-		ChannelPointsRewardEvent,
-		Redemption,
-		RedemptionEvent
-	} from '../types/ChannelPointsReward';
-	import type { WebSocketMessage } from '../types/WebSocketMessage';
+	import type { WebSocketMessage, WebSocketMessageError } from '../types/WebSocketMessage';
 
 	let webSocketEstablished = false;
 	let ws: WebSocket | null = null;
@@ -30,19 +26,18 @@
 		});
 
 		ws.addEventListener('message', (event: MessageEvent<string>) => {
-			const wsMessage: WebSocketMessage = JSON.parse(event.data);
+			const webSocketMessage: WebSocketMessage | WebSocketMessageError = JSON.parse(event.data);
+			console.log(webSocketMessage);
 
-			switch (wsMessage.type) {
+			switch (webSocketMessage.type) {
 				case 'RESPONSE':
-					return;
+					handleResponse(webSocketMessage);
+					break;
 				case 'MESSAGE':
-					const channelPointsRewardEvent: ChannelPointsRewardEvent = wsMessage.data;
-					const redemptionEvent: RedemptionEvent = JSON.parse(channelPointsRewardEvent.message);
-					const redemption: Redemption = redemptionEvent.data.redemption;
-					console.log(`${redemption.user.display_name} says ${redemption.user_input}`);
+					handleMessage(webSocketMessage as WebSocketMessage);
 					break;
 				default:
-					console.log('');
+					console.log(webSocketMessage.type);
 			}
 		});
 

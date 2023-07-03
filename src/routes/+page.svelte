@@ -8,6 +8,8 @@
 
 	let webSocketEstablished = false;
 	let ws: WebSocket | null = null;
+	let audioPlayer: HTMLAudioElement;
+	let audioURL: string;
 
 	const establishWebSocket = () => {
 		if (webSocketEstablished) return;
@@ -28,15 +30,24 @@
 			console.log('connection open', event);
 		});
 
-		ws.addEventListener('message', (event: MessageEvent<string>) => {
+		ws.addEventListener('message', async (event: MessageEvent<string>) => {
 			const webSocketMessage: WebSocketMessage | WebSocketMessageError = JSON.parse(event.data);
-
 			switch (webSocketMessage.type) {
 				case 'RESPONSE':
 					onMessageError(webSocketMessage as WebSocketMessageError);
 					break;
 				case 'MESSAGE':
-					onMessage(webSocketMessage as WebSocketMessage);
+					const userInput = onMessage(webSocketMessage as WebSocketMessage);
+					const audioRes = await fetch(
+						`https://api.streamelements.com/kappa/v2/speech?voice=Naayf&text=${userInput}`
+					)
+						.then(async (res) => await res.blob())
+						.then((audioBlob) => {
+							audioURL = URL.createObjectURL(audioBlob);
+							audioPlayer.addEventListener('loadeddata', () => {
+								audioPlayer.play();
+							});
+						});
 					break;
 				default:
 					console.log(webSocketMessage.type);
@@ -51,3 +62,4 @@
 <button disabled={webSocketEstablished} on:click={() => establishWebSocket()}>
 	Establish WebSocket connection
 </button>
+<audio src={audioURL} bind:this={audioPlayer} />

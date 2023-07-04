@@ -1,3 +1,5 @@
-export const onError = (event: Event) => {
-    console.error('WebSocket error', event);
-}
+export const onError = ({ websocket }: { websocket: WebSocket }) => {
+	websocket.addEventListener('error', (event: Event) => {
+		console.error(event);
+	});
+};

@@ -1,3 +1,5 @@
-export const onClose = (event: CloseEvent) => {
-	console.log('connection closed', event);
+export const onClose = ({ websocket }: { websocket: WebSocket }) => {
+	websocket.addEventListener('close', (event: CloseEvent) => {
+		console.log(event);
+	});
 };

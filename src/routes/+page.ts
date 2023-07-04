@@ -8,7 +8,8 @@ export const load = async () => {
 	let websocket: WebSocket | null = null;
 
 	if (browser) {
-		websocket = new WebSocket('wss://eventsub.wss.twitch.tv/ws');
+		websocket = new WebSocket('ws://127.0.0.1:8080/ws');
+		
 		onOpen({ websocket });
 		onMessage({ websocket });
 		onError({ websocket });

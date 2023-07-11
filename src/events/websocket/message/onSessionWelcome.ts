@@ -4,9 +4,11 @@ export async function onSessionWelcome(message: WelcomeMessage) {
 	try {
 		console.log('session_welcome', message);
 		const sessionId = message.payload.session.id;
-		await createSubscription(sessionId);
+		const subscription = await createSubscription(sessionId);
+		if (!subscription?.ok) throw new Error(`${subscription?.statusText} ${subscription?.status}`);
+		console.log(subscription);
 	} catch (error) {
-		console.error('Error in onSessionWelcome: ', error);
+		console.error(error);
 	}
 }
 

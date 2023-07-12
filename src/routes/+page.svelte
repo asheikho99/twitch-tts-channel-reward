@@ -5,7 +5,7 @@
 	let userInput: string;
 	let audioPlayer: HTMLAudioElement;
 	let audioURL: string;
-
+	
 	$: userStore.subscribe((data) => {
 		username = data.username;
 		userInput = data.userInput;
@@ -32,7 +32,9 @@
 	}
 </script>
 
-<p>USER: {username}</p>
-<p>MSG: {userInput}</p>
+<div class={`flex h-screen flex-col items-center justify-start space-y-2 p-4`}>
+	<p class="text-emerald-500 font-bold">{username}</p>
+	<p>{userInput}</p>
+</div>
 
 <audio src={audioURL} bind:this={audioPlayer} />

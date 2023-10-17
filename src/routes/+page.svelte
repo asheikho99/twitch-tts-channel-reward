@@ -1,16 +1,16 @@
 <script lang="ts">
-	import { userStore } from '../stores/userStore';
+	import { RedemptionStore } from '../stores/redemption-store';
 
-	let username: string;
-	let userInput: string;
+	let username: string | undefined;
+	let userInput: string | undefined;
 	let audioPlayer: HTMLAudioElement;
 	let audioURL: string;
-	
-	$: userStore.subscribe((data) => {
+
+	$: RedemptionStore.subscribe((data) => {
 		username = data.username;
 		userInput = data.userInput;
 
-		if (username != '' || userInput != '') {
+		if (username != undefined && userInput != undefined) {
 			generateTTS();
 		}
 	});
@@ -33,7 +33,7 @@
 </script>
 
 <div class={`flex h-screen flex-col items-center justify-start space-y-2 p-4`}>
-	<p class="text-emerald-500 font-bold">{username}</p>
+	<p class="font-bold text-emerald-500">{username}</p>
 	<p>{userInput}</p>
 </div>
 

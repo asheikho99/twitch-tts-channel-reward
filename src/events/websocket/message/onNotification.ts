@@ -1,5 +1,5 @@
 import type { NotificationMessage } from '../../../interfaces/NotificationMessage';
-import { userStore } from '../../../stores/userStore';
+import { RedemptionStore } from '../../../stores/redemption-store';
 
 export function onNotification(message: NotificationMessage) {
 	console.log('notification', message);
@@ -8,5 +8,5 @@ export function onNotification(message: NotificationMessage) {
 	const username = event.user_name;
 	const userInput = event.user_input;
 
-	userStore.set({ username: username, userInput: userInput });
+	RedemptionStore.set({ username: username, userInput: userInput });
 }

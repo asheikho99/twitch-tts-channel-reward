@@ -22,7 +22,7 @@
 			.then(async (res) => await res.blob())
 			.then((audioBlob) => {
 				audioURL = URL.createObjectURL(audioBlob);
-				audioPlayer.addEventListener('loadeddata', () => {
+				audioPlayer.addEventListener('loadeddata', async () => {
 					audioPlayer.play();
 				});
 			})

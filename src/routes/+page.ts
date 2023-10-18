@@ -4,6 +4,8 @@ import { onError } from '../events/websocket/onError';
 import { onMessage } from '../events/websocket/onMessage';
 import { onOpen } from '../events/websocket/onOpen';
 
+export const ssr = false;
+
 export const load = async () => {
 	let websocket: WebSocket | null = null;
 

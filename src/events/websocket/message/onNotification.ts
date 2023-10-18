@@ -7,6 +7,6 @@ export function onNotification(message: NotificationMessage) {
 	const event = message.payload.event;
 	const username = event.user_name;
 	const userInput = event.user_input;
-
+	
 	RedemptionStore.set({ username: username, userInput: userInput });
 }

@@ -1,5 +1,5 @@
-import type { NotificationMessage } from '../../../interfaces/NotificationMessage';
-import { RedemptionStore } from '../../../stores/redemption-store';
+import type { NotificationMessage } from '../../interfaces/NotificationMessage';
+import { RedemptionStore } from '../../stores/redemption-store';
 
 export function onNotification(message: NotificationMessage) {
 	console.log('notification', message);
